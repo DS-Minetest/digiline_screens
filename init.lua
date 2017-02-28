@@ -7,6 +7,9 @@
      \/   /_____/                 \/     \/_____/    \/     \/            \/     \/     \/     \/
 --]]
 
+local load_time_start = os.clock()
+
+
 digiline_screens = {}
 
 digiline_screens.registered_screens = {}
@@ -126,3 +129,12 @@ minetest.register_entity("digiline_screens:entity", {
 	visual = "upright_sprite",
 	textures = {"digiline_screens_screen.png"},
 })
+
+
+local time = math.floor(tonumber(os.clock()-load_time_start)*100+0.5)/100
+local msg = "[digiline_screens] loaded after ca. "..time
+if time > 0.05 then
+	print(msg)
+else
+	minetest.log("info", msg)
+end
