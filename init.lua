@@ -30,10 +30,25 @@ digiline_screens.registered_screens = {}
 local function make_texture(base, t, w, h)
 	local px = "digiline_screens_px.png"
 	local tex = base
-	for y = 1, #t do
-		for x = 1, #t[y] do
-			tex = tex.."^([combine:"..w.."x"..h..":"..tostring(x-1)..","..
-				tostring(y-1).."="..px.."^[colorize:"..t[y][x]..":255)"
+	if t.format == 1 or t.format == nil then -- Todo: transform this to format 2 instead.
+		for y = 1, #t do
+			for x = 1, #t[y] do
+				tex = tex.."^([combine:"..w.."x"..h..":"..tostring(x-1)..","..
+					tostring(y-1).."="..px.."^[colorize:"..t[y][x]..":255)"
+			end
+		end
+	elseif t.format == 2 then -- This format is better.
+		for col, poss in pairs(t) do
+			if col ~= "format" then
+				tex = tex.."^([combine:"..w.."x"..h
+				for i = 1, #poss do
+					local pos = poss[i]
+					local x = pos.x or pos[1]
+					local y = pos.y or pos[2]
+					tex = tex..":"..tostring(x-1)..","..tostring(y-1).."="..px
+				end
+				tex = tex.."^[colorize:"..col..":255)"
+			end
 		end
 	end
 	return tex
