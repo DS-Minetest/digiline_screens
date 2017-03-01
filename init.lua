@@ -29,10 +29,11 @@ digiline_screens.registered_screens = {}
 
 local px = "digiline_screens_px.png"
 local function make_texture(base, t, w, h)
-	local tex = base.."^[combine:"..w.."x"..h
+	local tex = base
 	for y = 1, #t do
 		for x = 1, #t[y] do
-			tex = tex..":"..x..","..y.."=("..px.."^[colorize:"..t[y][x]..":255)"
+			tex = tex.."^([combine:"..w.."x"..h..":"..tostring(x-1)..","..
+				tostring(y-1).."="..px.."^[colorize:"..t[y][x]..":255)"
 		end
 	end
 	return tex
