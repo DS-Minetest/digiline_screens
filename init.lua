@@ -27,8 +27,8 @@ digiline_screens.registered_screens = {}
 	--~ 16
 --~ )
 
-local px = "digiline_screens_px.png"
 local function make_texture(base, t, w, h)
+	local px = "digiline_screens_px.png"
 	local tex = base
 	for y = 1, #t do
 		for x = 1, #t[y] do
@@ -56,12 +56,17 @@ local function on_digiline_receive(pos, node, channel, msg)
 			break
 		end
 	end
-	--~ minetest.chat_send_all(dump(msg))
-	--~ minetest.chat_send_all(make_texture("digiline_screens_screen.png", msg, 16, 16))
 	ent:set_properties({
 			textures={make_texture("digiline_screens_screen.png", msg, 16, 16)}
 		})
 end
+
+local entposs = {
+	[2] = {delta = {x =  0.437, y = 0, z = 0}, yaw = math.pi * 1.5},
+	[3] = {delta = {x = -0.437, y = 0, z = 0}, yaw = math.pi * 0.5},
+	[4] = {delta = {x = 0, y = 0, z =  0.437}, yaw = 0},
+	[5] = {delta = {x = 0, y = 0, z = -0.437}, yaw = math.pi},
+}
 
 local box = {
 	type = "wallmounted",
@@ -92,11 +97,19 @@ minetest.register_node("digiline_screens:screen", {
 		local param2 = minetest.get_node(pos).param2
 		if param2 == 0 or param2 == 1 then
 			minetest.add_node(pos, {name = "digiline_screens:screen", param2 = 3})
+			param2 = 3
 		end
+		local entpos = entposs[param2]
+		if entpos == nil then return end
+		local ent = minetest.add_entity(
+				{x = pos.x + entpos.delta.x,
+				y = pos.y + entpos.delta.y,
+				z = pos.z + entpos.delta.z},
+				"digiline_screens:entity")
+		ent:setyaw(entpos.yaw or 0)
 	end,
 
 	on_construct = function(pos)
-		minetest.add_entity(pos, "digiline_screens:entity")
 		minetest.get_meta(pos):set_string("formspec",
 				"field[channel;Channel;${channel}]")
 	end,
@@ -128,7 +141,7 @@ minetest.register_entity("digiline_screens:entity", {
 	collisionbox = {0,0,0, 0,0,0},
 	physical=false,
 	visual = "upright_sprite",
-	textures = {"digiline_screens_screen.png"},
+	textures = {"blank.png"},
 })
 
 
