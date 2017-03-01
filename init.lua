@@ -21,17 +21,31 @@ minetest.register_entity("digiline_screens:entity", {
 	textures = {"blank.png"},
 })
 
+local function formate(i, w)
+	if i.format == w then return i end
+	local o = {}
+	if i.format == 1 and w == 2 then
+		for y = 1, #i do
+			for x = 1, #i do
+				local colp = o[i[y][x]]
+				if colp == nil then colp = {} end
+				colp[#colp+1] = {x, y}
+			end
+		end
+	end
+end
+
 local function make_texture(base, t, w, h)
 	local px = "digiline_screens_px.png"
 	local tex = base
-	if t.format == 1 or t.format == nil then -- Todo: transform this to format 2 instead.
+	if t.format == 1 or t.format == nil then
 		for y = 1, #t do
 			for x = 1, #t[y] do
 				tex = tex.."^([combine:"..w.."x"..h..":"..tostring(x-1)..","..
 					tostring(y-1).."="..px.."^[colorize:"..t[y][x]..":255)"
 			end
 		end
-	elseif t.format == 2 then -- This format is better.
+	elseif t.format == 2 then
 		for col, poss in pairs(t) do
 			if col ~= "format" then
 				tex = tex.."^([combine:"..w.."x"..h
