@@ -38,7 +38,12 @@ end
 local function make_texture(base, t, w, h)
 	local px = "digiline_screens_px.png"
 	local tex = base
-	if t.format == 1 or t.format == nil then
+	if t.format == 0 then
+		tex = tex.."^[combine:"..w.."x"..h
+		for i = 1, #t do
+			tex = tex..":0,0="..t[i]
+		end
+	elseif t.format == 1 or t.format == nil then
 		for y = 1, #t do
 			for x = 1, #t[y] do
 				tex = tex.."^([combine:"..w.."x"..h..":"..tostring(x-1)..","..
