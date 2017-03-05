@@ -21,19 +21,20 @@ minetest.register_entity("digiline_screens:entity", {
 	textures = {"blank.png"},
 })
 
-local function formate(i, w)
-	if i.format == w then return i end
-	local o = {}
-	if i.format == 1 and w == 2 then
-		for y = 1, #i do
-			for x = 1, #i do
-				local colp = o[i[y][x]]
-				if colp == nil then colp = {} end
-				colp[#colp+1] = {x, y}
-			end
-		end
-	end
-end
+-- not used yet:
+--~ local function formate(i, w)
+	--~ if i.format == w then return i end
+	--~ local o = {}
+	--~ if i.format == 1 and w == 2 then
+		--~ for y = 1, #i do
+			--~ for x = 1, #i do
+				--~ local colp = o[i[y][x]]
+				--~ if colp == nil then colp = {} end
+				--~ colp[#colp+1] = {x, y}
+			--~ end
+		--~ end
+	--~ end
+--~ end
 
 local function make_texture(base, t, w, h)
 	local px = "digiline_screens_px.png"
@@ -95,8 +96,8 @@ function digiline_screens.register_screen(name, spec, width, hight, entposs)
 	end
 
 	local f = spec.after_place_node
-	spec.after_place_node = function(pos, placer, itemstack)
-		if f then f(pos, placer, itemstack) end
+	spec.after_place_node = function(pos, placer, itemstack, pointed_thing)
+		if f then f(pos, placer, itemstack, pointed_thing) end
 		if spec.paramtype2 == "wallmounted" then
 			local entpos = entposs[minetest.get_node(pos).param2]
 			if entpos == nil then return end
