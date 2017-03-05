@@ -187,6 +187,34 @@ digiline_screens.register_screen("digiline_screens:screen",
 	entposs
 )
 
+digiline_screens.register_screen("digiline_screens:screen2",
+	{
+		description = "digiline screen 8x8",
+		drawtype = "nodebox",
+		inventory_image = "digiline_screens_screen2.png",
+		wield_image = "digiline_screens_screen2.png",
+		tiles = {"digiline_screens_screen2.png"},
+		paramtype = "light",
+		sunlight_propagates = true,
+		paramtype2 = "wallmounted",
+		node_box = box,
+		selection_box = box,
+		groups = {choppy = 3, dig_immediate = 2},
+		light_source = 6,
+
+		after_place_node = function (pos, placer, itemstack)
+			local param2 = minetest.get_node(pos).param2
+			if param2 == 0 or param2 == 1 then
+				minetest.add_node(pos, {name = "digiline_screens:screen2", param2 = 3})
+			end
+		end,
+	},
+
+	8,
+	8,
+	entposs
+)
+
 
 local time = math.floor(tonumber(os.clock()-load_time_start)*100+0.5)/100
 local msg = "[digiline_screens] loaded after ca. "..time
