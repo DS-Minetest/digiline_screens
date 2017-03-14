@@ -69,7 +69,7 @@ local function make_texture(base, t, w, h)
 end
 
 function digiline_screens.register_screen(name, spec, width, hight, entposs)
-	spec.digiline = {receptor, effector}
+	spec.digiline = spec.digiline or {}
 	spec.digiline.effector = spec.digiline.effector or {}
 	local f = spec.digiline.effector.action
 	spec.digiline.effector.action = function(pos, node, channel, msg)
