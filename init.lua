@@ -47,8 +47,10 @@ local function make_texture(base, t, w, h)
 	elseif t.format == 1 or t.format == nil then
 		for y = 1, #t do
 			for x = 1, #t[y] do
-				tex = tex.."^([combine:"..w.."x"..h..":"..tostring(x-1)..","..
-					tostring(y-1).."="..px.."^[colorize:"..t[y][x]..":255)"
+				if t[y][x] then
+					tex = tex.."^([combine:"..w.."x"..h..":"..tostring(x-1)..","..
+						tostring(y-1).."="..px.."^[colorize:"..t[y][x]..":255)"
+				end
 			end
 		end
 	elseif t.format == 2 then
